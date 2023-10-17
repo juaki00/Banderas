@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_principal"
+        android:icon="@drawable/menu"
+        android:title="Banderas"
+        app:showAsAction="ifRoom">
+        <menu>
+            <group android:id="@+id/grupo_opciones">
+                <item
+                    android:id="@+id/recargar"
+                    android:title="Recargar" />
+                <item
+                    android:id="@+id/limpiar"
+                    android:title="Limpiar" />
+            </group>
+        </menu>
+    </item>
+</menu>
