@@ -1,5 +1,7 @@
 package com.example.banderas
 
+import android.app.AlertDialog
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -7,6 +9,7 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.banderas.databinding.ActivityMainBinding
+import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() {
 
@@ -43,6 +46,43 @@ class MainActivity : AppCompatActivity() {
         }
 
         return true
+    }
+
+
+    override fun onContextItemSelected(item: MenuItem): Boolean {
+        lateinit var banderaAfectada: Bandera
+        lateinit var miIntent: Intent
+        banderaAfectada = BanderaProvider.banderas[item.groupId]
+        when(item.itemId){
+            0-> {
+                val alert =
+                    androidx.appcompat.app.AlertDialog.Builder(this).setTitle("Eliminar ${banderaAfectada.nombre}")
+                        .setMessage("¿Estas seguro de que quiere eliminar ${banderaAfectada.nombre}?")
+                        .setNeutralButton("Cerrar",null)
+                        .setPositiveButton("Aceptar"){_,_ ->
+                            display("Se ha eliminado ${banderaAfectada.nombre}")
+                            BanderaProvider.banderas.removeAt(item.groupId)
+                            binding.rvBanderas.adapter!!.notifyItemRemoved(item.groupId)
+                            binding.rvBanderas.adapter!!.notifyItemChanged(item.groupId, BanderaProvider.banderas)
+                            binding.rvBanderas.adapter = BanderaAdapter(BanderaProvider.banderas){
+                                    bandera ->  onItemSelected(bandera)
+                            }
+                        }.create()
+                alert.show()
+            }
+            1-> {
+//                val intent = Intent(this, editarBanderaActivity::class.java)
+//                this.startActivity(intent)
+            }
+
+            else -> return super.onContextItemSelected(item)
+        }
+        return true
+    }
+
+    private fun display(message: String) {
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
+
     }
 
 
