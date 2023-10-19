@@ -7,13 +7,20 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.banderas.databinding.ActivityMainBinding
 import com.google.android.material.snackbar.Snackbar
+import java.io.Serializable
+import java.security.Provider
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var intentLaunch:ActivityResultLauncher<Intent>
+    private lateinit var nombre:String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,6 +32,17 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.rvBanderas.setHasFixedSize(true)
+
+
+        intentLaunch = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult())
+        {
+                result: ActivityResult ->
+            if(result.resultCode== RESULT_OK){
+                nombre = result.data?.extras?.getString("nombre").toString()
+            }
+        }
+
 
     }
     private fun onItemSelected(bandera: Bandera){
@@ -50,9 +68,7 @@ class MainActivity : AppCompatActivity() {
 
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
-        lateinit var banderaAfectada: Bandera
-        lateinit var miIntent: Intent
-        banderaAfectada = BanderaProvider.banderas[item.groupId]
+        var banderaAfectada: Bandera = BanderaProvider.banderas[item.groupId]
         when(item.itemId){
             0-> {
                 val alert =
@@ -63,7 +79,6 @@ class MainActivity : AppCompatActivity() {
                             display("Se ha eliminado ${banderaAfectada.nombre}")
                             BanderaProvider.banderas.removeAt(item.groupId)
                             binding.rvBanderas.adapter!!.notifyItemRemoved(item.groupId)
-                            binding.rvBanderas.adapter!!.notifyItemChanged(item.groupId, BanderaProvider.banderas)
                             binding.rvBanderas.adapter = BanderaAdapter(BanderaProvider.banderas){
                                     bandera ->  onItemSelected(bandera)
                             }
@@ -71,8 +86,12 @@ class MainActivity : AppCompatActivity() {
                 alert.show()
             }
             1-> {
-//                val intent = Intent(this, editarBanderaActivity::class.java)
-//                this.startActivity(intent)
+                val intent = Intent(this, EditarBanderaActivity::class.java)
+                intent.putExtra("imagen",banderaAfectada.imagen)
+                intent.putExtra("textoParaModificar",banderaAfectada.nombre)
+                startActivity(intent)
+                BanderaProvider.banderas[item.groupId] = Bandera("hola",banderaAfectada.imagen)
+                binding.rvBanderas.adapter!!.notifyItemChanged(item.groupId)
             }
 
             else -> return super.onContextItemSelected(item)

@@ -29,6 +29,6 @@ class BanderaViewHolder(view: View):ViewHolder(view), View.OnCreateContextMenuLi
     ) {
         menu!!.setHeaderTitle(bandera.nombre)
         menu.add(this.adapterPosition,0,0,"Eliminar")
-        menu.add(this.adapterPosition,1,0,"Editar")
+        menu.add(this.adapterPosition,1,1,"Editar")
     }
 }

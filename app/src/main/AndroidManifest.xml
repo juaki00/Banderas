@@ -21,6 +21,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".EditarBanderaActivity"
+            android:label="Editar comunidad"
+            android:theme="@style/Theme.EjemploFrutas">
+        </activity>
+
     </application>
 
 </manifest>
