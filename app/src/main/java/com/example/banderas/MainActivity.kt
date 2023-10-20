@@ -1,8 +1,6 @@
 package com.example.banderas
 
-import android.app.AlertDialog
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -10,17 +8,18 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.banderas.databinding.ActivityMainBinding
 import com.google.android.material.snackbar.Snackbar
-import java.io.Serializable
-import java.security.Provider
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var intentLaunch:ActivityResultLauncher<Intent>
-    private lateinit var nombre:String
+    private var nombre:String="Sin nombre"
+    private var indice:Int=0
+    private var textoHint:String="Comunidad"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +39,8 @@ class MainActivity : AppCompatActivity() {
                 result: ActivityResult ->
             if(result.resultCode== RESULT_OK){
                 nombre = result.data?.extras?.getString("nombre").toString()
+                indice = result.data?.extras?.getInt("indice")!!
+//                textoHint = result.data?.extras?.getString("textoEditarNombre").toString()
             }
         }
 
@@ -70,6 +71,7 @@ class MainActivity : AppCompatActivity() {
     override fun onContextItemSelected(item: MenuItem): Boolean {
         var banderaAfectada: Bandera = BanderaProvider.banderas[item.groupId]
         when(item.itemId){
+            //Opcion Eliminar
             0-> {
                 val alert =
                     androidx.appcompat.app.AlertDialog.Builder(this).setTitle("Eliminar ${banderaAfectada.nombre}")
@@ -85,19 +87,37 @@ class MainActivity : AppCompatActivity() {
                         }.create()
                 alert.show()
             }
+            //Opcion Editar
             1-> {
                 val intent = Intent(this, EditarBanderaActivity::class.java)
+
+
+                Toast.makeText(this,"indice1 "+item.groupId,Toast.LENGTH_SHORT).show()
                 intent.putExtra("imagen",banderaAfectada.imagen)
+                intent.putExtra("indice",item.groupId)
                 intent.putExtra("textoParaModificar",banderaAfectada.nombre)
-                startActivity(intent)
-                BanderaProvider.banderas[item.groupId] = Bandera("hola",banderaAfectada.imagen)
-                binding.rvBanderas.adapter!!.notifyItemChanged(item.groupId)
+                intentLaunch.launch(intent)
+
             }
 
             else -> return super.onContextItemSelected(item)
         }
         return true
     }
+
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        val indice = data?.getIntExtra("indiceback",0)
+        Toast.makeText(this,"indice3 "+indice,Toast.LENGTH_SHORT).show()
+        // Recupera el string del Intent devuelto
+        val nombre = data!!.getStringExtra("nombre")
+//        val indice = intent.getIntExtra("indice",0)
+        BanderaProvider.banderas[indice!!] = Bandera(data.getStringExtra("nombre")!!,BanderaProvider.banderas[indice].imagen)
+        binding.rvBanderas.adapter!!.notifyItemChanged(indice)
+    }
+
 
     private fun display(message: String) {
         Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
