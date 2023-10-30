@@ -91,8 +91,6 @@ class MainActivity : AppCompatActivity() {
             1-> {
                 val intent = Intent(this, EditarBanderaActivity::class.java)
 
-
-                Toast.makeText(this,"indice1 "+item.groupId,Toast.LENGTH_SHORT).show()
                 intent.putExtra("imagen",banderaAfectada.imagen)
                 intent.putExtra("indice",item.groupId)
                 intent.putExtra("textoParaModificar",banderaAfectada.nombre)

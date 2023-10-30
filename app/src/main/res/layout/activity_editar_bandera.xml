@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/loEditarBandera"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -42,16 +43,14 @@
 
     <EditText
         android:id="@+id/textoEditarNombre"
-        android:layout_width="222dp"
-        android:layout_height="51dp"
+        android:layout_width="222sp"
+        android:layout_height="wrap_content"
+        android:textColorHint="@color/black"
+        android:layout_marginTop="32dp"
         android:ems="10"
-        android:hint="Andalucia"
         android:inputType="text"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.384" />
+        app:layout_constraintTop_toBottomOf="@+id/ivCambiarBandera" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

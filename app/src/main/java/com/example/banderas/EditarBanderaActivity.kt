@@ -1,14 +1,14 @@
 package com.example.banderas
 
+import android.R.*
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.appcompat.app.AppCompatActivity
 import com.example.banderas.databinding.ActivityEditarBanderaBinding
-import com.example.banderas.databinding.ActivityMainBinding
+
 
 class EditarBanderaActivity : AppCompatActivity() {
 
@@ -23,11 +23,8 @@ class EditarBanderaActivity : AppCompatActivity() {
         binding = ActivityEditarBanderaBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        Toast.makeText(this,"texto "+textoHint, Toast.LENGTH_SHORT).show()
-
         binding.ivCambiarBandera.setImageResource(intent.getIntExtra("imagen",0))
-        binding.textoEditarNombre.hint = textoHint
-
+        binding.textoEditarNombre.setText(textoHint)
 
         val nombre=intent.getStringExtra("nombre")
         val etNombre=findViewById<EditText>(R.id.textoEditarNombre)
