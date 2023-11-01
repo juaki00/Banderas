@@ -108,11 +108,12 @@ class MainActivity : AppCompatActivity() {
                         .setPositiveButton("Aceptar"){_,_ ->
                             display("Se ha eliminado ${banderaAfectada.nombre}")
                             listaBanderas.removeAt(item.groupId)
+//                            binding.rvBanderas.adapter?.notifyDataSetChanged()
                             binding.rvBanderas.adapter?.notifyItemRemoved(item.groupId)
-                            binding.rvBanderas.adapter?.notifyItemRangeChanged(item.groupId, BanderaProvider.banderas.size)
-                            binding.rvBanderas.adapter = BanderaAdapter(BanderaProvider.banderas){
-                                    bandera ->  onItemSelected(bandera)
-                            }
+//                            binding.rvBanderas.adapter?.notifyItemRangeChanged(0, BanderaProvider.banderas.size)
+//                            binding.rvBanderas.adapter = BanderaAdapter(BanderaProvider.banderas){
+//                                    bandera ->  onItemSelected(bandera)
+//                            }
                             banderaDAO.eliminarBandera(this,banderaAfectada)
                         }.create()
                 alert.show()
@@ -132,20 +133,6 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//        val indice = data?.getIntExtra("indice",0)
-//        Toast.makeText(this,"indice3 "+indice,Toast.LENGTH_SHORT).show()
-//        // Recupera el string del Intent devuelto
-//        if(indice!!>=0) {
-//            BanderaProvider.banderas[indice!!] = Bandera(
-//                data.getIntExtra("id", 0),
-//                data.getStringExtra("nombre")!!,
-//                BanderaProvider.banderas[indice].imagen
-//            )
-//            binding.rvBanderas.adapter!!.notifyItemChanged(indice)
-//        }
-//    }
 
     private fun display(message: String) {
         Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
