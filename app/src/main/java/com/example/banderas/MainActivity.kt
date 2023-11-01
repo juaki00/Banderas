@@ -111,9 +111,9 @@ class MainActivity : AppCompatActivity() {
 //                            binding.rvBanderas.adapter?.notifyDataSetChanged()
                             binding.rvBanderas.adapter?.notifyItemRemoved(item.groupId)
 //                            binding.rvBanderas.adapter?.notifyItemRangeChanged(0, BanderaProvider.banderas.size)
-//                            binding.rvBanderas.adapter = BanderaAdapter(BanderaProvider.banderas){
-//                                    bandera ->  onItemSelected(bandera)
-//                            }
+                            binding.rvBanderas.adapter = BanderaAdapter(listaBanderas){
+                                    bandera ->  onItemSelected(bandera)
+                            }
                             banderaDAO.eliminarBandera(this,banderaAfectada)
                         }.create()
                 alert.show()
@@ -121,7 +121,6 @@ class MainActivity : AppCompatActivity() {
             //Opcion Editar
             1-> {
                 val intent = Intent(this, EditarBanderaActivity::class.java)
-                display("id1 ${item.groupId}")//////////////////////////
                 intent.putExtra("imagen",banderaAfectada.imagen)
                 intent.putExtra("indice",item.groupId)
                 intent.putExtra("textoParaModificar",banderaAfectada.nombre)
