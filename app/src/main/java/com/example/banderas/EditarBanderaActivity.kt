@@ -22,36 +22,7 @@ class EditarBanderaActivity : AppCompatActivity(), OnClickListener {
     private var id: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        binding = ActivityEditarBanderaBinding.inflate(layoutInflater)
-//        setContentView(binding.root)
-//
-//        val indice = intent.getIntExtra("indice",0)
-//        val textoHint = intent.getStringExtra("textoParaModificar")
-//
-//        binding.ivCambiarBandera.setImageResource(intent.getIntExtra("imagen",0))
-//        binding.textoEditarNombre.setText(textoHint)
-//
-//        val nombre=intent.getStringExtra("nombre")
-//        val etNombre=findViewById<EditText>(R.id.textoEditarNombre)
-//        etNombre.hint=nombre
-//        val btnCambiar=findViewById<Button>(R.id.buttonCambiar)
-//        val btnCancelar=findViewById<Button>(R.id.buttonCancelar)
-//
-//        btnCambiar.setOnClickListener{
-//            val intent = Intent()
-//            val name = etNombre.text.toString()
-//            intent.putExtra("nombre",name)
-//            intent.putExtra("indiceback",indice)
-//            setResult(RESULT_OK,intent)
-//            finish()
-//        }
-//
-//        btnCancelar.setOnClickListener{
-//            intent.putExtra("indiceback",-1)
-//            setResult(RESULT_OK,intent)
-//            finish()
-//        }
+
         super.onCreate(savedInstanceState)
         binding = ActivityEditarBanderaBinding.inflate(layoutInflater)
         setContentView(binding.root)

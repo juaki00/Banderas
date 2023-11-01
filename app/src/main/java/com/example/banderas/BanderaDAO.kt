@@ -71,11 +71,11 @@ class BanderaDAO {
         db.close()
     }
 
-    fun recargarBanderas(context: Context?) {
+    fun recargarBanderas(context: Context?, listaBanderas: MutableList<Bandera>) {
         borrarTodas(context)
         val db = DBOpenHelper.getInstance(context)!!.writableDatabase
 
-        val listaBanderas = BanderaProvider.banderasCopia
+//        val listaBanderas = BanderaProvider.banderasCopia
         for(bandera in listaBanderas){
             db.execSQL(
                 "INSERT INTO ${BanderaContract.Companion.Entrada.NOMBRE_TABLA}(" +

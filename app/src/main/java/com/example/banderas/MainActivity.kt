@@ -62,7 +62,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-
     }
     private fun onItemSelected(bandera: Bandera){
         Toast.makeText(this,"Yo soy de ${bandera.nombre}",Toast.LENGTH_SHORT).show()
@@ -72,7 +71,6 @@ class MainActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.menu, menu)
         return true
     }
-
 
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -87,8 +85,8 @@ class MainActivity : AppCompatActivity() {
             R.id.recargar -> {
                 listaBanderas.clear()
                 binding.rvBanderas.adapter?.notifyDataSetChanged()
-                listaBanderas.addAll(BanderaProvider.banderasCopia)
-                banderaDAO.recargarBanderas(this)
+                listaBanderas.addAll(BanderaProvider.banderas)
+                banderaDAO.recargarBanderas(this, BanderaProvider.banderas)
                 binding.rvBanderas.adapter?.notifyItemRangeInserted(0,BanderaProvider.banderas.size)
                 true
             }
@@ -97,7 +95,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
-        val banderaAfectada: Bandera = BanderaProvider.banderas[item.groupId]
+        val banderaAfectada: Bandera = listaBanderas[item.groupId]
         when(item.itemId){
             //Opcion Eliminar
             0-> {
@@ -108,9 +106,7 @@ class MainActivity : AppCompatActivity() {
                         .setPositiveButton("Aceptar"){_,_ ->
                             display("Se ha eliminado ${banderaAfectada.nombre}")
                             listaBanderas.removeAt(item.groupId)
-//                            binding.rvBanderas.adapter?.notifyDataSetChanged()
                             binding.rvBanderas.adapter?.notifyItemRemoved(item.groupId)
-//                            binding.rvBanderas.adapter?.notifyItemRangeChanged(0, BanderaProvider.banderas.size)
                             binding.rvBanderas.adapter = BanderaAdapter(listaBanderas){
                                     bandera ->  onItemSelected(bandera)
                             }
