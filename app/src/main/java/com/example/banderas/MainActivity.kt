@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
                 result: ActivityResult ->
             if(result.resultCode == RESULT_OK){
                 nombre = result.data?.extras?.getString("nombre").toString()
-                indice = result.data?.extras?.getInt("indice")!!
+                indice = result.data?.extras?.getInt("id")!!
                 listaBanderas[indice].nombre = nombre
                 adapter = BanderaAdapter(listaBanderas){
                         bandera ->  onItemSelected(bandera)
@@ -132,20 +132,20 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        val indice = data?.getIntExtra("indiceback",0)
-        Toast.makeText(this,"indice3 "+indice,Toast.LENGTH_SHORT).show()
-        // Recupera el string del Intent devuelto
-        if(indice!!>=0) {
-            BanderaProvider.banderas[indice!!] = Bandera(
-                data.getIntExtra("id", 0),
-                data.getStringExtra("nombre")!!,
-                BanderaProvider.banderas[indice].imagen
-            )
-            binding.rvBanderas.adapter!!.notifyItemChanged(indice)
-        }
-    }
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//        val indice = data?.getIntExtra("indice",0)
+//        Toast.makeText(this,"indice3 "+indice,Toast.LENGTH_SHORT).show()
+//        // Recupera el string del Intent devuelto
+//        if(indice!!>=0) {
+//            BanderaProvider.banderas[indice!!] = Bandera(
+//                data.getIntExtra("id", 0),
+//                data.getStringExtra("nombre")!!,
+//                BanderaProvider.banderas[indice].imagen
+//            )
+//            binding.rvBanderas.adapter!!.notifyItemChanged(indice)
+//        }
+//    }
 
     private fun display(message: String) {
         Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()

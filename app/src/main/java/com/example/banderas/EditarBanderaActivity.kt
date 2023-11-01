@@ -56,7 +56,7 @@ class EditarBanderaActivity : AppCompatActivity(), OnClickListener {
         binding = ActivityEditarBanderaBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val nombre = intent.getStringExtra("nombreComunidad")
+        val nombre = intent.getStringExtra("textoParaModificar")
         val imagen = intent.getIntExtra("imagen", 0)
         btnCambiar = binding.buttonCambiar
         btnCambiar.setOnClickListener(this)
@@ -66,7 +66,7 @@ class EditarBanderaActivity : AppCompatActivity(), OnClickListener {
         infoImagen = binding.ivCambiarBandera
         infoImagen.setImageResource(imagen)
         infoNombre.hint = nombre
-        id = intent.getIntExtra("id", 0)
+        id = intent.getIntExtra("indice", 0)
     }
 
 
