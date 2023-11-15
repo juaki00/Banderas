@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Comunidades Autónomas</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="recordar">Recordar</string>
+    <string name="e_mail">E-mail</string>
+    <string name="banderas">Banderas</string>
 </resources>

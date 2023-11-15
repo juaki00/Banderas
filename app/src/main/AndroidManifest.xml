@@ -13,19 +13,21 @@
         android:theme="@style/Theme.EjemploFrutas"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".loginActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+            </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="false"/>
         <activity
             android:name=".EditarBanderaActivity"
             android:label="Editar comunidad"
-            android:theme="@style/Theme.EjemploFrutas">
-        </activity>
+            android:theme="@style/Theme.EjemploFrutas"/>
 
     </application>
 
