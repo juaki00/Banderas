@@ -4,29 +4,65 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.ContactsContract.CommonDataKinds.Email
 import android.text.TextUtils
 import android.util.Patterns
+import android.view.View
 import android.widget.Toast
+import androidx.constraintlayout.motion.widget.MotionLayout
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.example.banderas.databinding.ActivityLoginBinding
 
-class loginActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity() {
 
     private lateinit var bindin: ActivityLoginBinding
     private lateinit var prefs: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
         bindin = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(bindin.root)
+        Thread.sleep(2000)
+        splashScreen.setKeepOnScreenCondition{false}
         prefs = getSharedPreferences("app", MODE_PRIVATE)
         establecerValoresSiExisten()
+        //Listener del boton
         bindin.buttonLogin.setOnClickListener{
             val email = bindin.email.text.toString()
             val password = bindin.password.text.toString()
             if(login(email, password)) goToMain()
             guardarPreferencias(email, password)
         }
+
+        //SplashScreen
+        bindin.motionLayout.setTransitionListener( object: MotionLayout.TransitionListener{
+            override fun onTransitionStarted(
+                motionLayout: MotionLayout?,
+                startId: Int,
+                endId: Int
+            ) {
+            }
+
+            override fun onTransitionChange(
+                motionLayout: MotionLayout?,
+                startId: Int,
+                endId: Int,
+                progress: Float
+            ) {
+            }
+
+            override fun onTransitionCompleted(motionLayout: MotionLayout?, currentId: Int) {
+                bindin.motionLayout.visibility = View.GONE
+            }
+
+            override fun onTransitionTrigger(
+                motionLayout: MotionLayout?,
+                triggerId: Int,
+                positive: Boolean,
+                progress: Float
+            ) {
+            }
+        })
     }
 
     private fun login(email: String, password: String): Boolean {
