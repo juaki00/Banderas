@@ -26,9 +26,10 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var intentLaunch:ActivityResultLauncher<Intent>
-    private lateinit var listaBanderas:MutableList<Bandera>
+    private lateinit var listaBanderas:List<Bandera>
+    private lateinit var layoutManager: LinearLayoutManager
     private lateinit var adapter: BanderaAdapter
-    private var banderaDAO = BanderaDAO()
+    private lateinit var banderaDAO: BanderaDAO
     private var nombre:String="Sin nombre"
     private var indice:Int=0
     private var textoHint:String="Comunidad"
@@ -37,12 +38,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        banderaDAO = BanderaDAO()
 
         listaBanderas = banderaDAO.cargarLista(this)
-        binding.rvBanderas.layoutManager=LinearLayoutManager(this)
-        binding.rvBanderas.adapter=BanderaAdapter(listaBanderas){ bandera ->
+        layoutManager=LinearLayoutManager(this)
+        binding.rvBanderas.layoutManager = layoutManager
+        adapter=BanderaAdapter(listaBanderas){ bandera ->
             onItemSelected(bandera)
         }
+        binding.rvBanderas.adapter=adapter
 
 
         intentLaunch = registerForActivityResult(
@@ -56,7 +60,8 @@ class MainActivity : AppCompatActivity() {
                 adapter = BanderaAdapter(listaBanderas){
                         bandera ->  onItemSelected(bandera)
                 }
-                adapter.notifyItemChanged(indice)
+//                adapter.notifyItemChanged(indice)
+                adapter.updateList(listaBanderas)
                 banderaDAO.actualizarBandera(this,listaBanderas[indice])
                 binding.rvBanderas.adapter = adapter
                 textoHint = result.data?.extras?.getString("textoEditarNombre").toString()
@@ -83,18 +88,22 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when(item.itemId) {
             R.id.limpiar -> {
-                listaBanderas.clear()
+                val nuevaLista:List<Bandera> = listaBanderas.minus(listaBanderas)
                 banderaDAO.borrarTodas(this)
-                binding.rvBanderas.adapter?.notifyDataSetChanged()
+                adapter.updateList(nuevaLista)
+                binding.rvBanderas.adapter = adapter
+//                binding.rvBanderas.adapter =BanderaAdapter(listaBanderas){ bandera ->
+//                    onItemSelected(bandera)
+//                }
                 true
             }
 
             R.id.recargar -> {
-                listaBanderas.clear()
-                binding.rvBanderas.adapter?.notifyDataSetChanged()
-                listaBanderas.addAll(BanderaProvider.banderas)
+                listaBanderas.minus(listaBanderas)
+                val nuevaLista:List<Bandera> = listaBanderas.plus(BanderaProvider.banderas.toSet())
                 banderaDAO.recargarBanderas(this, BanderaProvider.banderas)
-                binding.rvBanderas.adapter?.notifyItemRangeInserted(0,BanderaProvider.banderas.size)
+                adapter.updateList(nuevaLista)
+                binding.rvBanderas.adapter = adapter
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -112,11 +121,12 @@ class MainActivity : AppCompatActivity() {
                         .setNeutralButton("Cerrar",null)
                         .setPositiveButton("Aceptar"){_,_ ->
                             display("Se ha eliminado ${banderaAfectada.nombre}")
-                            listaBanderas.removeAt(item.groupId)
-                            binding.rvBanderas.adapter?.notifyItemRemoved(item.groupId)
-                            binding.rvBanderas.adapter = BanderaAdapter(listaBanderas){
-                                    bandera ->  onItemSelected(bandera)
-                            }
+                            val nuevaLista:List<Bandera> = ArrayList<Bandera>(listaBanderas.minus(banderaAfectada))
+                            adapter.updateList(nuevaLista)
+                            binding.rvBanderas.adapter = adapter
+//                            binding.rvBanderas.adapter = BanderaAdapter(listaBanderas){
+//                                    bandera ->  onItemSelected(bandera)
+//                            }
                             banderaDAO.eliminarBandera(this,banderaAfectada)
                         }.create()
                 alert.show()

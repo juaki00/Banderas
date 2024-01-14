@@ -2,7 +2,7 @@ package com.example.banderas
 
 class BanderaProvider {
     companion object{
-        var banderas =  mutableListOf(
+        var banderas =  listOf(
             Bandera(0,"Andalucía", R.drawable.andalucia),
             Bandera(1,"Aragón", R.drawable.aragon),
             Bandera(2,"Islas Baleares", R.drawable.baleares),

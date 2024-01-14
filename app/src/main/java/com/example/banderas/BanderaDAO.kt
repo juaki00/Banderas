@@ -71,7 +71,7 @@ class BanderaDAO {
         db.close()
     }
 
-    fun recargarBanderas(context: Context?, listaBanderas: MutableList<Bandera>) {
+    fun recargarBanderas(context: Context?, listaBanderas: List<Bandera>) {
         borrarTodas(context)
         val db = DBOpenHelper.getInstance(context)!!.writableDatabase
 
